@@ -47,7 +47,7 @@ action :create do
     # sensitive true
     retries 3
     command "chef-server-ctl user-create #{new_resource.username} #{new_resource.first_name} #{new_resource.last_name} #{new_resource.email} #{password} -f #{key}"
-    not_if { node.run_state['chef-users'].index(/^#{new_resource.username}$/) }
+    only_if { node.run_state['chef-users'].index(/\b#{new_resource.username}\b/).nil? }
   end
 
   ruby_block 'append-user-to-users' do
